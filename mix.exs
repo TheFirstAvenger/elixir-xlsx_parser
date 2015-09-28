@@ -35,6 +35,7 @@ defmodule XlsxParser.Mixfile do
   defp deps do
     [{:sweet_xml, "~> 0.4.0"},
      {:simple_agent, "~> 0.0.7"},
+     {:timex, "~> 0.19.5"},
      {:earmark, "~> 0.1", only: :dev},
      {:ex_doc, "~> 0.7", only: :dev}]
   end

@@ -1,3 +1,5 @@
+require Logger
+
 defmodule XlsxParser do
 
   alias XlsxParser.XlsxUtil
@@ -19,13 +21,16 @@ defmodule XlsxParser do
         |> case do
           {:error, reason} -> {:error, reason}
           {:ok, shared_strings} ->
+            Logger.debug "Retrieved shared strings for #{Path.rootname(path)}"
             path
             |> XlsxUtil.get_raw_content("xl/worksheets/sheet#{sheet_number}.xml", zip)
             |> case do
               {:error, reason} -> {:error, reason}
               {:ok, content}   ->
+                Logger.debug "Retrieved content for #{Path.rootname(path)}"
                 ret = content
                 |> XmlParser.parse_xml_content(shared_strings)
+                Logger.debug "Parsed xml for #{Path.rootname(path)}"
                 {:ok, ret}
             end
         end
