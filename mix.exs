@@ -41,7 +41,7 @@ defmodule XlsxParser.Mixfile do
 
 
   defp description do
-    "Simple parsing of xlsx spreadsheet data. Data can be retrieved or written to csv"
+    "Simple parsing of xlsx spreadsheet data. Data can be retrieved or written to csv."
   end
 
   defp package do
