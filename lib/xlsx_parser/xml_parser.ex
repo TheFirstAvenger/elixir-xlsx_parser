@@ -19,7 +19,7 @@ defmodule XlsxParser.XmlParser do
       nil -> ""
       {:xmlElement,:v,:v,_,_,_,_,_,[{_,_,_,_,text,_}],_,_,_} -> text
     end
-    text = case attributes |> Enum.find(&elem(&1, 1) == :t) do
+    text = case attributes |> Enum.find(fn attr -> elem(attr, 1) == :t and elem(attr, 8) == 's' end) do
       nil -> text
       _ -> get_shared_string(shared_strings, text)
     end
