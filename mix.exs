@@ -45,7 +45,7 @@ defmodule XlsxParser.Mixfile do
   end
 
   defp package do
-    [contributors: ["Mike Binns"],
+    [maintainers: ["Mike Binns"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/TheFirstAvenger/elixir-xlsx_parser.git"}]
   end
