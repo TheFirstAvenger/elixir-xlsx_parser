@@ -18,3 +18,7 @@ ret will contain a list of {column, row, value}:
     {status, ret} = XlsxParser.write_sheet_content_to_csv("/path/to/my.xlsx", 1, "/path/to/my.csv")
 
 ret will contain the full text written out to /path/to/my.csv
+
+DISCLAIMER:
+
+This parser works on documents I have so far encountered. Please verify that it works for your documents before using in production. Log any issues via github.
