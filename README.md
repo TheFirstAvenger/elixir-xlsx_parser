@@ -1,5 +1,6 @@
 XlsxParser
 ==========
+[![Build Status](https://semaphoreci.com/api/v1/projects/0f705138-4dca-4e46-890b-52e6031926c8/616905/badge.svg)](https://semaphoreci.com/TheFirstAvenger/elixir-xlsx_parser)
 
 Simple parsing of xlsx spreadsheet data. Data can be retrieved or written to csv.
 
