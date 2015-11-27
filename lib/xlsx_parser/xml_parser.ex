@@ -13,8 +13,7 @@ defmodule XlsxParser.XmlParser do
     |> xpath(~x"//worksheet/sheetData/row/c"l)
     |> Stream.map(&parse_from_element(&1,shared_strings))
     |> Enum.into([])
-    _end = :os.timestamp
-    elapsed = Timex.Time.diff(_end, start) |> Timex.Time.convert(:msecs)
+    elapsed = Timex.Time.diff(:os.timestamp, start) |> Timex.Time.convert(:msecs)
     Logger.debug("Completed parse of #{length(ret)} cells in #{elapsed}ms")
     ret
   end

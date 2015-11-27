@@ -3,4 +3,4 @@
 erl_crash.dump
 *.ez
 doc/
-xlsx_parser.sublime-workspace
+elixir-xlsx_parser.sublime-workspace
