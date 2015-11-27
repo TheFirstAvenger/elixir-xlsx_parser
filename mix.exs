@@ -3,7 +3,7 @@ defmodule XlsxParser.Mixfile do
 
   def project do
     [app: :xlsx_parser,
-     version: "0.0.3",
+     version: "0.0.4",
      elixir: "~> 1.0",
      description: description,
      package: package,
@@ -33,11 +33,11 @@ defmodule XlsxParser.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{:sweet_xml, "~> 0.4.0"},
+    [{:sweet_xml, "~> 0.5.0"},
      {:simple_agent, "~> 0.0.7"},
-     {:timex, "~> 0.19.5"},
+     {:timex, "~> 1.0.0-rc"},
      {:earmark, "~> 0.1", only: :dev},
-     {:ex_doc, "~> 0.7", only: :dev}]
+     {:ex_doc, "~> 0.11", only: :dev}]
   end
 
 
