@@ -3,16 +3,13 @@ defmodule XlsxParser.Mixfile do
 
   def project do
     [app: :xlsx_parser,
-     version: "0.0.5",
+     version: "0.0.6",
      elixir: "~> 1.0",
      description: description,
      package: package,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps,
-     docs: [readme: "README.md",
-       main: "README",
-       source_url: "https://github.com/TheFirstAvenger/elixir-xlsx_parser.git"]
+     deps: deps
 ]
   end
 
@@ -35,7 +32,6 @@ defmodule XlsxParser.Mixfile do
   defp deps do
     [{:sweet_xml, "~> 0.6.1"},
      {:simple_agent, "~> 0.0.7"},
-     {:timex, "~> 2.0"},
      {:earmark, "~> 0.2", only: :dev},
      {:ex_doc, "~> 0.11", only: :dev}]
   end

@@ -7,14 +7,11 @@ defmodule XlsxParser.XmlParser do
 
   @spec parse_xml_content(String.t, map) :: [col_row_val]
   def parse_xml_content(xml, shared_strings) do
-    start = :os.timestamp
     ret = xml
     #|> stream_tags(:c) #poor performance after ~5k elements
     |> xpath(~x"//worksheet/sheetData/row/c"l)
     |> Stream.map(&parse_from_element(&1,shared_strings))
     |> Enum.into([])
-    elapsed = Timex.Time.diff(:os.timestamp, start) |> Timex.Time.convert(:msecs)
-    Logger.debug("Completed parse of #{length(ret)} cells in #{elapsed}ms")
     ret
   end
 
