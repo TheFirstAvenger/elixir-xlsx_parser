@@ -20,11 +20,19 @@ defmodule XlsxParser.XmlParser do
     {:xmlAttribute, :r, _,_,_,_,_,_,col_row,_} = attributes |> Enum.find(&elem(&1, 1) == :r)
     text = case elements |> Enum.find(&elem(&1, 1) == :v) do
       nil -> ""
-      {:xmlElement,:v,:v,_,_,_,_,_,[{_,_,_,_,text,_}],_,_,_} -> text
+      {:xmlElement,:v,:v,_,_,_,_,_,text_chunks,_,_,_} ->
+        case text_chunks do
+          [{_,_,_,_,txt,_}] -> txt
+          x when is_list(x) -> Enum.reduce(text_chunks, '', fn {_,_,_,_,txt,_}, acc -> acc ++ txt end)
+        end
     end
     text = case attributes |> Enum.find(fn attr -> elem(attr, 1) == :t and elem(attr, 8) == 's' end) do
       nil -> text
       _ -> shared_strings[text]
+    end
+    text = cond do
+      String.contains?("#{text}", "\n") -> '"' ++ text ++ '"'
+      true -> text
     end
     {col, row} = parse_col_row(col_row)
     {col, row, "#{text}"}
@@ -44,7 +52,13 @@ defmodule XlsxParser.XmlParser do
   def parse_shared_strings(xml) do
     xml
     |> xpath(~x"//si/t"l)
-    |> Enum.reduce(HashDict.new, fn {:xmlElement,:t,:t,_,_,si,_,_,[{_,_,_,_,text,_}],_,_,_}, acc -> Dict.put_new(acc, String.to_char_list("#{si[:si]-1}"), text) end)
+    |> Enum.reduce(HashDict.new, fn {:xmlElement,:t,:t,_,_,si,_,_,text_chunks,_,_,_}, acc ->
+                                    text = case text_chunks do
+                                      [{_,_,_,_,txt,_}] -> txt
+                                      x when is_list(x) -> Enum.reduce(text_chunks, '', fn {_,_,_,_,txt,_}, acc -> acc ++ txt end)
+                                    end
+                                    Dict.put_new(acc, String.to_char_list("#{si[:si]-1}"), text)
+                                 end)
   end
 
 end
