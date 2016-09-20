@@ -3,7 +3,7 @@ defmodule XlsxParser.Mixfile do
 
   def project do
     [app: :xlsx_parser,
-     version: "0.0.7",
+     version: "0.0.8",
      elixir: "~> 1.0",
      description: description,
      package: package,
@@ -32,8 +32,8 @@ defmodule XlsxParser.Mixfile do
   defp deps do
     [{:sweet_xml, "~> 0.6.1"},
      {:simple_agent, "~> 0.0.7"},
-     {:earmark, "~> 0.2", only: :dev},
-     {:ex_doc, "~> 0.11", only: :dev}]
+     {:earmark, "~> 1.0.1", only: :dev},
+     {:ex_doc, "~> 0.13.1", only: :dev}]
   end
 
 
