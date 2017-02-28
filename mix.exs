@@ -3,13 +3,13 @@ defmodule XlsxParser.Mixfile do
 
   def project do
     [app: :xlsx_parser,
-     version: "0.0.8",
+     version: "0.0.9",
      elixir: "~> 1.0",
-     description: description,
-     package: package,
+     description: description(),
+     package: package(),
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps
+     deps: deps()
 ]
   end
 
