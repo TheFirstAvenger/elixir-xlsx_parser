@@ -14,8 +14,21 @@ defmodule XlsxParserTest do
     def zip_close(_), do: :ok
   end
 
+  defmodule ZipMockWithoutSharedStrings do
+    def zip_open(_, _), do: {:ok, SimpleAgent.start!}
+    def zip_get('xl/sharedStrings.xml', _), do: {:error, :file_not_found}
+    def zip_get('xl/worksheets/sheet1.xml', _), do: {:ok, {:abc, '<worksheet><sheetData><row><c r="A1"><v>a</v></c><c r="A2"> <v>two</v></c><c r="A3"><v>c</v></c></row><row><c r="B1"><v>d</v></c><c r="B2" ><v>three</v></c><c r="B3"><v>f</v></c></row></sheetData></worksheet>'}}
+    def zip_close(_), do: :ok
+  end
+
   test "get_sheet_content success" do
     {status, ret} = XlsxParser.get_sheet_content("/path/to/my.xlsx", 1, ZipMock)
+    assert status == :ok
+    assert ret == [{"A", 1, "a"}, {"A", 2, "two"}, {"A", 3, "c"}, {"B", 1, "d"},{"B", 2, "three"}, {"B", 3, "f"}]
+  end
+
+  test "get_sheet_content success without sharedStrings" do
+    {status, ret} = XlsxParser.get_sheet_content("/path/to/my.xlsx", 1, ZipMockWithoutSharedStrings)
     assert status == :ok
     assert ret == [{"A", 1, "a"}, {"A", 2, "two"}, {"A", 3, "c"}, {"B", 1, "d"},{"B", 2, "three"}, {"B", 3, "f"}]
   end

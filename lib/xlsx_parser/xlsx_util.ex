@@ -6,6 +6,7 @@ defmodule XlsxParser.XlsxUtil do
     path
     |> get_raw_content("xl/sharedStrings.xml", zip)
     |> case do
+      {:error, :file_not_found} -> {:ok, []}
       {:error, reason} -> {:error, reason}
       {:ok, content}   ->
         ret = content
