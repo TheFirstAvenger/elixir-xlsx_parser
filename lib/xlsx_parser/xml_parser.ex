@@ -18,14 +18,9 @@ defmodule XlsxParser.XmlParser do
   @spec parse_from_element(tuple, map) :: {String.t, integer, String.t}
   defp parse_from_element({:xmlElement,:c,:c,_,_,_,_,attributes,elements,_,_,_}, shared_strings) do
     {:xmlAttribute, :r, _,_,_,_,_,_,col_row,_} = attributes |> Enum.find(&elem(&1, 1) == :r)
-    text = case elements |> Enum.find(&elem(&1, 1) == :v) do
-      nil -> ""
-      {:xmlElement,:v,:v,_,_,_,_,_,text_chunks,_,_,_} ->
-        case text_chunks do
-          [{_,_,_,_,txt,_}] -> txt
-          x when is_list(x) -> Enum.reduce(text_chunks, '', fn {_,_,_,_,txt,_}, acc -> acc ++ txt end)
-        end
-    end
+    is_inline_string = attributes |> Enum.any?(&elem(&1, 8) == 'inlineStr')
+    text = get_text(elements, is_inline_string)
+
     text = case attributes |> Enum.find(fn attr -> elem(attr, 1) == :t and elem(attr, 8) == 's' end) do
       nil -> text
       _ -> shared_strings[text]
@@ -36,6 +31,32 @@ defmodule XlsxParser.XmlParser do
     end
     {col, row} = parse_col_row(col_row)
     {col, row, "#{text}"}
+  end
+
+  defp get_text(elements, true) do
+    case elements |> Enum.find(&elem(&1, 1) == :is) do
+      nil -> ""
+      {:xmlElement,:is,:is,_,_,_,_,_,element,_,_,_} ->
+        case element do
+          [{:xmlElement,:t,:t,_,_,_,_,_,text_chunks,_,_,_}] ->
+            decode_text_chunks(text_chunks)
+          _ -> ""
+        end
+    end
+  end
+  defp get_text(elements, false) do
+    case elements |> Enum.find(&elem(&1, 1) == :v) do
+      nil -> ""
+      {:xmlElement,:v,:v,_,_,_,_,_,text_chunks,_,_,_} ->
+        decode_text_chunks(text_chunks)
+    end
+  end
+
+  defp decode_text_chunks(text_chunks) do
+    case text_chunks do
+      [{_,_,_,_,txt,_}] -> txt
+      x when is_list(x) -> Enum.reduce(text_chunks, '', fn {_,_,_,_,txt,_}, acc -> acc ++ txt end)
+    end
   end
 
   @spec parse_col_row([char]) :: {String.t, integer}
