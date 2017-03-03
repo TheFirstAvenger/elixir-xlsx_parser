@@ -14,10 +14,10 @@ defmodule XlsxParserTest do
     def zip_close(_), do: :ok
   end
 
-  defmodule ZipMockWithoutSharedStrings do
+  defmodule ZipMockWithInlineStrings do
     def zip_open(_, _), do: {:ok, SimpleAgent.start!}
     def zip_get('xl/sharedStrings.xml', _), do: {:error, :file_not_found}
-    def zip_get('xl/worksheets/sheet1.xml', _), do: {:ok, {:abc, '<worksheet><sheetData><row><c r="A1"><v>a</v></c><c r="A2"> <v>two</v></c><c r="A3"><v>c</v></c></row><row><c r="B1"><v>d</v></c><c r="B2" ><v>three</v></c><c r="B3"><v>f</v></c></row></sheetData></worksheet>'}}
+    def zip_get('xl/worksheets/sheet1.xml', _), do: {:ok, {:abc, '<worksheet><sheetData><row r="1"><c s="1" t="inlineStr" r="A1"><is><t xml:space="preserve">a</t></is></c><c s="2" t="inlineStr" r="A2"><is><t xml:space="preserve">two</t></is></c><c s="3" t="inlineStr" r="A3"><is><t xml:space="preserve">c</t></is></c></row><row r="2"><c s="1" t="inlineStr" r="B1"><is><t xml:space="preserve">d</t></is></c><c s="2" t="inlineStr" r="B2"><is><t xml:space="preserve">three</t></is></c><c s="3" t="inlineStr" r="B3"><is><t xml:space="preserve">f</t></is></c></row></sheetData></worksheet>'}}
     def zip_close(_), do: :ok
   end
 
@@ -28,7 +28,7 @@ defmodule XlsxParserTest do
   end
 
   test "get_sheet_content success without sharedStrings" do
-    {status, ret} = XlsxParser.get_sheet_content("/path/to/my.xlsx", 1, ZipMockWithoutSharedStrings)
+    {status, ret} = XlsxParser.get_sheet_content("/path/to/my.xlsx", 1, ZipMockWithInlineStrings)
     assert status == :ok
     assert ret == [{"A", 1, "a"}, {"A", 2, "two"}, {"A", 3, "c"}, {"B", 1, "d"},{"B", 2, "three"}, {"B", 3, "f"}]
   end
