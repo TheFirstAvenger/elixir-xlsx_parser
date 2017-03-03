@@ -3,7 +3,7 @@ defmodule XlsxParser.Mixfile do
 
   def project do
     [app: :xlsx_parser,
-     version: "0.0.9",
+     version: "0.0.10",
      elixir: "~> 1.0",
      description: description(),
      package: package(),
