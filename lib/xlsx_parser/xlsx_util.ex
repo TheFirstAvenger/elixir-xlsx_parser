@@ -48,6 +48,19 @@ defmodule XlsxParser.XlsxUtil do
     end
   end
 
+  defp escape_field(data) when not is_binary(data) do
+	data
+  end
+  defp escape_field(data) when is_binary(data) do
+	String.replace(data,"\\","\\\\")
+	|>String.replace("\"","\\\"")
+	|>(fn str -> "\""<>str<>"\"" end).()
+  end
+
+  defp escape_strings(row) do
+	  Enum.map(row,&escape_field(&1))
+  end
+
   @spec col_row_vals_to_csv([XmlParser.col_row_val]) :: String.t
   def col_row_vals_to_csv(col_row_vals) do
     col_row_vals
@@ -58,7 +71,8 @@ defmodule XlsxParser.XlsxUtil do
                           |> expand(to_num(col), "") #Ensure there are as many columns as the new column's index
                           |> List.replace_at(to_num(col) - 1, text) #put the new value in the new row
                           List.replace_at(acc, row - 1, new_row) #replace the old row with the new row
-                        end)
+						end)
+	|> Enum.map(&escape_strings(&1))
     |> Enum.reduce("", fn row, acc ->
                         acc <> Enum.join(row, ",") <> "\n"
                        end)
