@@ -36,7 +36,7 @@ defmodule XlsxParserTest do
   defmodule FileMock do
     def write(loc, content) do
       assert loc == "/path/to/my.csv"
-      assert content == "a,d\ntwo,three\nc,f\n"
+      assert content == "\"a\",\"d\"\n\"two\",\"three\"\n\"c\",\"f\"\n"
       :ok
     end
   end
@@ -44,7 +44,7 @@ defmodule XlsxParserTest do
   test "write_sheet_content_to_csv success" do
     {status, ret} = XlsxParser.write_sheet_content_to_csv("/path/to/my.xlsx", 1, "/path/to/my.csv", ZipMock, FileMock)
     assert status == :ok
-    assert ret == "a,d\ntwo,three\nc,f\n"
+    assert ret == "\"a\",\"d\"\n\"two\",\"three\"\n\"c\",\"f\"\n"
   end
 
   defmodule FileMockFail do
