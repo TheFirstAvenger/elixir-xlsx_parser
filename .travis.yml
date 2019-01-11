@@ -1,0 +1,19 @@
+language: elixir
+elixir:
+  - 1.7
+otp_release:
+  - 21.0
+env:
+  - MIX_ENV=test
+sudo: false
+before_script:
+  - mix format --check-formatted
+  - mix compile --warnings-as-errors
+  - mix credo --strict
+script:
+  - mix test
+after_script:
+  - mix coveralls.travis
+cache:
+  directories:
+  - assets/node_modules
