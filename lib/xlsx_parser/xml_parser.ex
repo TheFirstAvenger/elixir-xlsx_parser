@@ -94,7 +94,7 @@ defmodule XlsxParser.XmlParser do
   @spec parse_shared_strings(String.t()) :: map
   def parse_shared_strings(xml) do
     xml
-    |> xpath(~x"//si/t"l)
+    |> xpath(~x"//si/t|//si/r/t"l)
     |> Enum.reduce(%{}, fn {:xmlElement, :t, :t, _, _, si, _, _, text_chunks, _, _, _}, acc ->
       text = chunks_to_text(text_chunks)
 
