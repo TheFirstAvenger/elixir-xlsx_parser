@@ -11,7 +11,7 @@ defmodule XlsxParserTest do
     def zip_open(_, _), do: {:ok, SimpleAgent.start!()}
 
     def zip_get('xl/sharedStrings.xml', _),
-      do: {:ok, {:abc, '<sst><si><t>one</t></si><si><t>two</t></si><si><t>three</t></si></sst>'}}
+      do: {:ok, {:abc, '<sst><si><t>one</t></si><si><t>two</t></si><si><r><t>three</t></r></si></sst>'}}
 
     def zip_get('xl/worksheets/sheet1.xml', _),
       do:
