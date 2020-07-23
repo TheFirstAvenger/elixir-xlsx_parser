@@ -35,17 +35,6 @@ defmodule XlsxParser.XlsxUtil do
     end
   end
 
-  @spec validate_path(String.t()) :: {:ok | :error, String.t()}
-  def validate_path(path) do
-    path
-    |> String.downcase()
-    |> Path.extname()
-    |> case do
-      ".xlsx" -> {:ok, path}
-      _ -> {:error, "Path must be for an .xlsx"}
-    end
-  end
-
   defp escape_field(data) when not is_binary(data) do
     data
   end

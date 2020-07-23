@@ -1,12 +1,6 @@
 defmodule XlsxParserTest do
   use ExUnit.Case
 
-  test "get_sheet_content invalid path" do
-    {status, reason} = XlsxParser.get_sheet_content("invalid path.txt", 1)
-    assert status == :error
-    assert reason == "Path must be for an .xlsx"
-  end
-
   defmodule ZipMock do
     def zip_open(_, _), do: {:ok, SimpleAgent.start!()}
 
