@@ -13,7 +13,6 @@ defmodule XlsxParser do
   @spec get_sheet_content(String.t(), integer, module) :: {:ok, XmlParser.col_row_val()} | {:error, String.t()}
   def get_sheet_content(path, sheet_number, zip \\ :zip) do
     with(
-      {:ok, path} <- XlsxUtil.validate_path(path),
       {:ok, shared_strings} <- XlsxUtil.get_shared_strings(path, zip),
       {:ok, content} <- XlsxUtil.get_raw_content(path, "xl/worksheets/sheet#{sheet_number}.xml", zip),
       ret <- XmlParser.parse_xml_content(content, shared_strings)
