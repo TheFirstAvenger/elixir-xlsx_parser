@@ -3,6 +3,11 @@ defmodule XlsxParser.MixProject do
 
   def project do
     [
+      dialyzer: [
+        ignore_warnings: ".dialyzer_ignore.exs",
+        list_unused_filters: true,
+        plt_file: {:no_warn, "priv/plts/xlsx_parser.plt"}
+      ],
       app: :xlsx_parser,
       version: "0.1.1",
       elixir: "~> 1.7",
@@ -32,14 +37,16 @@ defmodule XlsxParser.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:sweet_xml, "~> 0.6.5"},
+      {:git_hooks, "~> 0.5.0", only: :dev, runtime: false},
+      {:sweet_xml, "~> 0.6.6"},
       {:simple_agent, "~> 0.0.7"},
-      {:earmark, "~> 1.3.1", only: :dev},
-      {:ex_doc, "~> 0.19.2", only: :dev},
-      {:ex_unit_notifier, "~> 0.1", only: :test},
-      {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.10.3", only: :test},
-      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:earmark, "~> 1.4.10", only: :dev},
+      {:ex_doc, "~> 0.22.2", only: :dev},
+      {:ex_unit_notifier, "~> 0.1.4", only: :test},
+      {:mix_test_watch, "~> 1.0.2", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.13.1", only: :test},
+      {:credo, "~> 1.4.0", only: [:dev, :test], runtime: false}
     ]
   end
 
