@@ -10,14 +10,12 @@ defmodule XlsxParser do
   sheet. The values are returned as a list of {column, row, value} tuples. An optional parameter of the zip
   processing module is allowed (for testing purposes).
   """
-  @spec get_sheet_content(String.t(), integer, module) :: {:ok, XmlParser.col_row_val()} | {:error, String.t()}
+  @spec get_sheet_content(String.t(), pos_integer(), module()) :: {:ok, [XmlParser.col_row_val()]} | {:error, String.t()}
   def get_sheet_content(path, sheet_number, zip \\ :zip) do
-    with(
-      {:ok, shared_strings} <- XlsxUtil.get_shared_strings(path, zip),
-      {:ok, content} <- XlsxUtil.get_raw_content(path, "xl/worksheets/sheet#{sheet_number}.xml", zip),
-      ret <- XmlParser.parse_xml_content(content, shared_strings)
-    ) do
-      Logger.debug(fn -> "Parsed xml for #{Path.rootname(path)}" end)
+    with {:ok, shared_strings} <- XlsxUtil.get_shared_strings(path, zip),
+         {:ok, content} <- XlsxUtil.get_raw_content(path, "xl/worksheets/sheet#{sheet_number}.xml", zip) do
+      ret = XmlParser.parse_xml_content(content, shared_strings)
+      Logger.debug("Parsed xml for #{Path.rootname(path)}")
       {:ok, ret}
     else
       {:error, reason} -> {:error, reason}
@@ -28,7 +26,7 @@ defmodule XlsxParser do
   Given a path to an .xlsx, a sheet number, and a path to a csv, this function writes the content of the specified
   sheet to the specified csv path.
   """
-  @spec write_sheet_content_to_csv(String.t(), integer, String.t(), module, module) :: {:ok, String.t()} | {:error, String.t()}
+  @spec write_sheet_content_to_csv(String.t(), pos_integer(), String.t(), module(), module()) :: {:ok, String.t()} | {:error, String.t()}
   def write_sheet_content_to_csv(xlsx_path, sheet_number, csv_path, zip \\ :zip, file \\ File) do
     case get_sheet_content(xlsx_path, sheet_number, zip) do
       {:error, reason} ->

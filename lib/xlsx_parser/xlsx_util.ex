@@ -2,13 +2,13 @@ defmodule XlsxParser.XlsxUtil do
   @moduledoc false
   alias XlsxParser.XmlParser
 
-  @spec get_shared_strings(String.t(), module) :: {:ok, [XmlParser.ss()]} | {:error, String.t()}
+  @spec get_shared_strings(String.t(), module) :: {:ok, map()} | {:error, String.t()}
   def get_shared_strings(path, zip \\ :zip) do
     path
     |> get_raw_content("xl/sharedStrings.xml", zip)
     |> case do
       {:error, :enoent} ->
-        {:ok, []}
+        {:ok, %{}}
 
       {:error, reason} ->
         {:error, reason}

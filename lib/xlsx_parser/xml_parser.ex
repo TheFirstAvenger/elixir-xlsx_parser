@@ -4,21 +4,18 @@ defmodule XlsxParser.XmlParser do
   @moduledoc false
   import SweetXml
 
-  @type col_row_val :: {String.t(), integer, String.t()}
+  @type col_row_val :: {String.t(), pos_integer(), String.t()}
 
-  @spec parse_xml_content(String.t(), map) :: [col_row_val]
+  @spec parse_xml_content(String.t(), map()) :: [col_row_val]
   def parse_xml_content(xml, shared_strings) do
-    ret =
-      xml
-      # |> stream_tags(:c) #poor performance after ~5k elements
-      |> xpath(~x"//worksheet/sheetData/row/c"l)
-      |> Stream.map(&parse_from_element(&1, shared_strings))
-      |> Enum.into([])
-
-    ret
+    xml
+    # |> stream_tags(:c) #poor performance after ~5k elements
+    |> xpath(~x"//worksheet/sheetData/row/c"l)
+    |> Stream.map(&parse_from_element(&1, shared_strings))
+    |> Enum.into([])
   end
 
-  @spec parse_from_element(tuple, map) :: {String.t(), integer, String.t()}
+  @spec parse_from_element(tuple, map()) :: col_row_val()
   defp parse_from_element(
          {:xmlElement, :c, :c, _, _, _, _, attributes, elements, _, _, _},
          shared_strings
@@ -81,12 +78,12 @@ defmodule XlsxParser.XmlParser do
     end
   end
 
-  @spec parse_col_row([char]) :: {String.t(), integer}
+  @spec parse_col_row([char]) :: {String.t(), pos_integer()}
   defp parse_col_row(col_row) do
     _parse_col_row([], [], col_row)
   end
 
-  @spec _parse_col_row([char], [char], [char]) :: {String.t(), integer}
+  @spec _parse_col_row([char], [char], [char]) :: {String.t(), pos_integer()}
   defp _parse_col_row(col, row, []), do: {"#{col}", "#{row}" |> Integer.parse() |> elem(0)}
   defp _parse_col_row(col, row, [h | t]) when h in ?A..?Z, do: _parse_col_row(col ++ [h], row, t)
   defp _parse_col_row(col, row, [h | t]) when h in ?0..?9, do: _parse_col_row(col, row ++ [h], t)
