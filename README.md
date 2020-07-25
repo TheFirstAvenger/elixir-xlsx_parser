@@ -33,7 +33,7 @@ This package can be installed by adding `xlsx_parser` to your list of dependenci
 ```elixir
 def deps do
   [
-    {:xlsx_parser, "~> 0.1.1"}
+    {:xlsx_parser, "~> 0.1.2"}
   ]
 end
 ```
