@@ -9,7 +9,7 @@ defmodule XlsxParser.MixProject do
         plt_file: {:no_warn, "priv/plts/xlsx_parser.plt"}
       ],
       app: :xlsx_parser,
-      version: "0.1.1",
+      version: "0.1.2",
       elixir: "~> 1.7",
       description: description(),
       package: package(),
