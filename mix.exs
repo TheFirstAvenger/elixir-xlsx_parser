@@ -37,16 +37,16 @@ defmodule XlsxParser.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:git_hooks, "~> 0.5.0", only: :dev, runtime: false},
-      {:sweet_xml, "~> 0.6.6"},
-      {:simple_agent, "~> 0.0.7"},
+      {:git_hooks, "~> 0.5", only: :dev, runtime: false},
+      {:sweet_xml, "~> 0.6"},
+      {:simple_agent, "~> 0.0.7", only: :test},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:earmark, "~> 1.4.10", only: :dev},
-      {:ex_doc, "~> 0.22.2", only: :dev},
+      {:ex_doc, "~> 0.22", only: :dev},
       {:ex_unit_notifier, "~> 0.1.4", only: :test},
       {:mix_test_watch, "~> 1.0.2", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.13.1", only: :test},
-      {:credo, "~> 1.4.0", only: [:dev, :test], runtime: false}
+      {:excoveralls, "~> 0.13", only: :test},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 
